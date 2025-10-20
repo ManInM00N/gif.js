@@ -146,6 +146,14 @@ class GIF extends EventEmitter
     image = new Blob [data],
       type: 'image/gif'
 
+    # 释放 worker 内存
+    for worker in @freeWorkers when worker?
+        @log 'terminating worker'
+        worker.terminate()
+    @freeWorkers = []
+
+    @running = false
+
     @emit 'finished', image, data
 
   renderNextFrame: ->

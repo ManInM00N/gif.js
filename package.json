@@ -9,10 +9,15 @@
     "browserify": "^13.1.1",
     "coffeeify": "^2.1.0",
     "exorcist": "^0.4.0",
+    "terser": "^5.44.0",
     "uglify-js": "^2.7.5"
   },
   "scripts": {
-    "prepublish": "./bin/build"
+    "build": "node build.js",
+    "build:main": "browserify -d -s GIF -t coffeeify src/gif.coffee | exorcist dist/_gif.js.map > dist/_gif.js",
+    "build:worker": "browserify -d -t coffeeify --bare src/gif.worker.coffee | exorcist dist/_gif.worker.js.map > dist/_gif.worker.js",
+    "uglify:main": "uglifyjs dist/_gif.js --in-source-map dist/_gif.js.map --source-map dist/gif.js.map --source-map-url gif.js.map -o dist/gif.js",
+    "uglify:worker": "uglifyjs dist/_gif.worker.js --in-source-map dist/_gif.worker.js.map --source-map dist/gif.worker.js.map --source-map-url gif.worker.js.map -o dist/gif.worker.js"
   },
   "browser": "./dist/gif.js",
   "keywords": [
